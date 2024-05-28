@@ -30,7 +30,7 @@ export class DovetailCalculator extends LitElement {
   }
 
   @state()
-  private division: Division = Division.Fine
+  private division: Division = Division.Medium
 
   @state()
   private tailPinRatio = 2;

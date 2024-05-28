@@ -172,10 +172,15 @@ export class DovetailCalculator extends LitElement {
       <section>
         <svg width=${this.workpieceWidth} height=${
         3 * this.workpieceHeight
-      } xmlns="http://www.w3.org/2000/svg">
+      } xmlns="http://www.w3.org/2000/svg" style="margin-right: ${this.workpieceWidth}px; margin-bottom: ${3 * this.workpieceHeight}px">
           ${this.renderWorkpiece()}
           ${this.renderTails()}
         </svg>
+      </section>
+
+      <section class="source">
+        Source code: <a href="https://github.com/hupf/schwalbenundzinken">github.com/hupf/schwalbenundzinken</a><br>
+        © Mathis Hofer – free software under the terms of the Apache License 2.0.
       </section>
     `;
   }
@@ -187,6 +192,11 @@ export class DovetailCalculator extends LitElement {
 
     section {
       margin-top: 1rem;
+    }
+
+    section.source {
+      margin-top: 2rem;
+      font-size: 0.7rem;
     }
 
     input[type=number] {

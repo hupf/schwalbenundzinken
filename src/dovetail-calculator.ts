@@ -32,6 +32,9 @@ export class DovetailCalculator extends LitElement {
   @state()
   private division: Division = Division.Fine
 
+  @state()
+  private tailPinRatio = 2;
+
   private get tailsCount(): number {
     return Math.floor(
       this.workpieceWidth / this.workpieceHeight * DIVISION_FACTOR[this.division]
@@ -39,7 +42,9 @@ export class DovetailCalculator extends LitElement {
   }
 
   private get partsCount(): number {
-    return this.tailsCount * 3 + 1;
+    const pinParts = this.tailsCount + 1;
+    const tailParts = Math.floor(this.tailsCount * this.tailPinRatio);
+    return pinParts + tailParts;
   }
 
   private get partWidth(): number {
@@ -51,7 +56,7 @@ export class DovetailCalculator extends LitElement {
   }
 
   private get tailWidth(): number {
-    return 2 * this.partWidth;
+    return this.partWidth * this.tailPinRatio;
   }
 
   private get deviation(): number {
@@ -62,6 +67,13 @@ export class DovetailCalculator extends LitElement {
     return Math.atan(
       (2.5 * this.workpieceHeight) / (this.tailWidth / 2)
     )
+  }
+
+  /**
+   * Offset of the lower corners to the tail mark on the center line
+   */
+  private get tailMarkOffset(): number {
+   return (3 * this.workpieceHeight) / Math.tan(this.angle) - this.tailWidth / 2;
   }
 
   private renderWorkpiece() {
@@ -77,16 +89,12 @@ export class DovetailCalculator extends LitElement {
   }
 
   private renderTails() {
-    // Offset of the lower corners to the tail mark on the center line
-    const tailMarkOffset =
-      (3 * this.workpieceHeight) / Math.tan(this.angle) - this.tailWidth / 2;
-
     const tails = new Array(this.tailsCount)
       .fill(undefined)
       .map((_, i) =>
         this.renderTail(
-          this.deviation/2 + i * (this.pinWidth + this.tailWidth) + this.pinWidth - tailMarkOffset,
-          this.tailWidth + 2 * tailMarkOffset
+          this.deviation/2 + i * (this.pinWidth + this.tailWidth) + this.pinWidth - this.tailMarkOffset,
+          this.tailWidth + 2 * this.tailMarkOffset
         )
       );
     return join(tails, '')
@@ -107,15 +115,15 @@ export class DovetailCalculator extends LitElement {
       <section>
         <div>
           <label>
-            Workpiece width (mm):
-            <input type="number" .value=${this.workpieceWidth} @change=${(e: Event) => this.workpieceWidth = Number((e.target as HTMLInputElement).value)} />
+            Workpiece width:
+            <input type="number" .value=${this.workpieceWidth} @change=${(e: Event) => this.workpieceWidth = Number((e.target as HTMLInputElement).value)} min="1" /> mm
           </label>
         </div>
 
         <div>
           <label>
-            Workpiece height (mm):
-            <input type="number" .value=${this.workpieceHeight} @change=${(e: Event) => this.workpieceHeight = Number((e.target as HTMLInputElement).value)} />
+            Workpiece height (thickness):
+            <input type="number" .value=${this.workpieceHeight} @change=${(e: Event) => this.workpieceHeight = Number((e.target as HTMLInputElement).value)} min="1" /> mm
           </label>
         </div>
 
@@ -128,6 +136,13 @@ export class DovetailCalculator extends LitElement {
                 ${division}
               </label>
             `)}
+          </label>
+        </div>
+
+        <div>
+          <label>
+            Dovetail to pin width ratio:
+            <input type="number" .value=${this.tailPinRatio} @change=${(e: Event) => this.tailPinRatio = Number((e.target as HTMLInputElement).value)} min="0" step="0.25" />
           </label>
         </div>
       </section>
@@ -147,6 +162,10 @@ export class DovetailCalculator extends LitElement {
 
         <div>
           Angle: ${90 - Math.round(this.angle * 180 / Math.PI)}°
+        </div>
+
+        <div>
+          Dovetail tip-to-tip distance: ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
         </div>
       </section>
 
@@ -168,6 +187,10 @@ export class DovetailCalculator extends LitElement {
 
     section {
       margin-top: 1rem;
+    }
+
+    input[type=number] {
+      width: 8ch;
     }
 
     svg {

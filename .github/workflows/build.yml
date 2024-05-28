@@ -49,7 +49,7 @@ jobs:
       - name: Build
         run: |
           pnpm build
-          touch dist/.nojekyll
+          sed -i -e 's~/assets/~/schwalbenundzinken/assets/~g' dist/index.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

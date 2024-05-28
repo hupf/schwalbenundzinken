@@ -108,14 +108,14 @@ export class DovetailCalculator extends LitElement {
         <div>
           <label>
             Workpiece width (mm):
-            <input type="number" .value=${this.workpieceWidth} @change=${(e) => this.workpieceWidth = e.target.value} />
+            <input type="number" .value=${this.workpieceWidth} @change=${(e: Event) => this.workpieceWidth = Number((e.target as HTMLInputElement).value)} />
           </label>
         </div>
 
         <div>
           <label>
             Workpiece height (mm):
-            <input type="number" .value=${this.workpieceHeight} @change=${(e) => this.workpieceHeight = e.target.value} />
+            <input type="number" .value=${this.workpieceHeight} @change=${(e: Event) => this.workpieceHeight = Number((e.target as HTMLInputElement).value)} />
           </label>
         </div>
 
@@ -124,7 +124,7 @@ export class DovetailCalculator extends LitElement {
             Division:
             ${Object.values(Division).map(division => html`
               <label>
-                <input name="division" type="radio" .value=${division} .checked=${this.division === division} @change=${(e) => this.division = division} />
+                <input name="division" type="radio" .value=${division} .checked=${this.division === division} @change=${() => this.division = division} />
                 ${division}
               </label>
             `)}

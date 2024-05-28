@@ -111,7 +111,7 @@ export class DovetailCalculator extends LitElement {
   render() {
     return html`
       <h1>Schwalben & Zinken</h1>
-      <p>This is a calculator and visualizer for <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail joints</a>. It first divides the workpiece into parts/dovetails according to <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a> then uses a dovetail angle according to <a href="https://archive.org/details/dermbelbaueinfac0000span">Fritz Spannagel</a>.
+      <p>This is a calculator and visualizer for <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail joints</a>. It first divides the workpiece into parts/dovetails according to <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a> then uses a dovetail angle according to <a href="https://d-nb.info/830690026">Fritz Spannagel</a>.
       <section>
         <div>
           <label>

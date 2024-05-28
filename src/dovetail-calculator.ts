@@ -111,7 +111,7 @@ export class DovetailCalculator extends LitElement {
   render() {
     return html`
       <h1>Schwalben & Zinken</h1>
-      <p>This is a calculator and visualizer for <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail joints</a>. It first divides the workpiece into parts/dovetails according to <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a> then uses a dovetail angle according to <a href="https://d-nb.info/830690026">Fritz Spannagel</a>.
+      <p>This is a calculator and visualizer for <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail joints</a>. It first determines the number of dovetails with a method that <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a> demostrates and then develops the angle as described by <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a triangle with three times the height of the workpiece is formed.
       <section>
         <div>
           <label>
@@ -165,7 +165,7 @@ export class DovetailCalculator extends LitElement {
         </div>
 
         <div>
-          Dovetail tip-to-tip distance: ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
+          Dovetail minimum distance: ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
         </div>
       </section>
 

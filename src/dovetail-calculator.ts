@@ -108,6 +108,16 @@ export class DovetailCalculator extends LitElement {
     `;
   }
 
+  private renderMarks() {
+    const marks = [];
+    for (let i = 0; i < this.tailsCount; i += 1) {
+      const base = Math.round(this.deviation / 2) + i * (this.pinWidth + this.tailWidth);
+      marks.push(base + this.pinWidth);
+      marks.push(base + this.pinWidth + this.tailWidth);
+    }
+    return html`Marks (on center line):<br>${join(marks, ", ")} mm`
+  }
+
   render() {
     return html`
       <h1>Schwalben & Zinken</h1>
@@ -176,6 +186,10 @@ export class DovetailCalculator extends LitElement {
           ${this.renderWorkpiece()}
           ${this.renderTails()}
         </svg>
+      </section>
+
+      <section>
+        ${this.renderMarks()}
       </section>
 
       <section class="source">

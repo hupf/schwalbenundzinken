@@ -36,14 +36,16 @@ export class DovetailCalculator extends LitElement {
   private tailPinRatio = 2;
 
   private get tailsCount(): number {
-    return Math.floor(
-      this.workpieceWidth / this.workpieceHeight * DIVISION_FACTOR[this.division]
-    );
+    return Math.floor(this.workpieceWidth / this.workpieceHeight * DIVISION_FACTOR[this.division]);
+  }
+
+  private get pinsCount(): number {
+    return this.tailsCount + 1;
   }
 
   private get partsCount(): number {
-    const pinParts = this.tailsCount + 1;
-    const tailParts = Math.floor(this.tailsCount * this.tailPinRatio);
+    const pinParts = this.pinsCount;
+    const tailParts = this.tailsCount * this.tailPinRatio;
     return pinParts + tailParts;
   }
 
@@ -56,11 +58,11 @@ export class DovetailCalculator extends LitElement {
   }
 
   private get tailWidth(): number {
-    return this.partWidth * this.tailPinRatio;
+    return Math.round(this.partWidth * this.tailPinRatio);
   }
 
   private get deviation(): number {
-    return this.workpieceWidth - this.partsCount * this.partWidth;
+    return this.workpieceWidth - (this.tailsCount * this.tailWidth + this.pinsCount * this.pinWidth);
   }
 
   private get angle(): number {
@@ -89,6 +91,7 @@ export class DovetailCalculator extends LitElement {
   }
 
   private renderTails() {
+    console.log(this.tailsCount)
     const tails = new Array(this.tailsCount)
       .fill(undefined)
       .map((_, i) =>
@@ -111,7 +114,7 @@ export class DovetailCalculator extends LitElement {
   private renderMarks() {
     const marks = [];
     for (let i = 0; i < this.tailsCount; i += 1) {
-      const base = Math.round(this.deviation / 2) + i * (this.pinWidth + this.tailWidth);
+      const base = this.deviation / 2 + i * (this.pinWidth + this.tailWidth);
       marks.push(base + this.pinWidth);
       marks.push(base + this.pinWidth + this.tailWidth);
     }

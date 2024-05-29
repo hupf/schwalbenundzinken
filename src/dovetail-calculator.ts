@@ -14,13 +14,23 @@ const DIVISION_FACTOR = {
   [Division.Coarse]: 0.5,
 };
 
+const WORKPIECE_WIDTH_KEY = "workpieceWidth";
+const WORKPIECE_HEIGHT_KEY = "workpieceHeight";
+const DIVISION_KEY = "division";
+const TAIL_PIN_RATIO_KEY = "tailPinRatio";
+
+const WORKPIECE_WIDTH_DEFAULT = 100;
+const WORKPIECE_HEIGHT_DEFAULT = 15;
+const DIVISION_DEFAULT: Division = Division.Medium;
+const TAIL_PIN_RATIO_DEFAULT = 2;
+
 @customElement('dovetail-calculator')
 export class DovetailCalculator extends LitElement {
   @state()
-  private workpieceWidth = 320;
+  private workpieceWidth = Number(this.readValue(WORKPIECE_WIDTH_KEY, WORKPIECE_WIDTH_DEFAULT));
 
   @state()
-  private workpieceHeight = 20;
+  private workpieceHeight = Number(this.readValue(WORKPIECE_HEIGHT_KEY, WORKPIECE_HEIGHT_DEFAULT));
 
   private get workpieceTop() {
     return 2 * this.workpieceHeight;
@@ -30,10 +40,10 @@ export class DovetailCalculator extends LitElement {
   }
 
   @state()
-  private division: Division = Division.Medium
+  private division: Division = this.readValue(DIVISION_KEY, DIVISION_DEFAULT) as Division;
 
   @state()
-  private tailPinRatio = 2;
+  private tailPinRatio = Number(this.readValue(TAIL_PIN_RATIO_KEY, TAIL_PIN_RATIO_DEFAULT));
 
   private get tailsCount(): number {
     return Math.floor(this.workpieceWidth / this.workpieceHeight * DIVISION_FACTOR[this.division]);
@@ -78,6 +88,41 @@ export class DovetailCalculator extends LitElement {
    return (3 * this.workpieceHeight) / Math.tan(this.angle) - this.tailWidth / 2;
   }
 
+  private reset(): void {
+    this.handleWorkpieceWidthChange(WORKPIECE_WIDTH_DEFAULT);
+    this.handleWorkpieceHeightChange(WORKPIECE_HEIGHT_DEFAULT);
+    this.handleDivisionChange(DIVISION_DEFAULT);
+    this.handleTailPinRatioChange(TAIL_PIN_RATIO_DEFAULT)
+  }
+
+  private handleWorkpieceWidthChange(e: Event | number): void {
+    this.workpieceWidth = typeof e ==="number" ? e : Number((e.target as HTMLInputElement).value);
+    this.storeValue(WORKPIECE_WIDTH_KEY, this.workpieceWidth);
+  }
+
+  private handleWorkpieceHeightChange(e: Event | number): void {
+    this.workpieceHeight = typeof e ==="number" ? e : Number((e.target as HTMLInputElement).value);
+    this.storeValue(WORKPIECE_HEIGHT_KEY, this.workpieceHeight);
+  }
+
+  private handleDivisionChange(division: Division): void {
+    this.division = division;
+    this.storeValue(DIVISION_KEY, this.division);
+  }
+
+  private handleTailPinRatioChange(e: Event | number): void {
+    this.tailPinRatio = typeof e ==="number" ? e : Number((e.target as HTMLInputElement).value);
+    this.storeValue(TAIL_PIN_RATIO_KEY, this.tailPinRatio);
+  }
+
+  private storeValue(key: string, value: unknown): void {
+    localStorage.setItem(key, String(value));
+  }
+
+  private readValue(key: string, defaultValue: unknown): string {
+    return localStorage.getItem(key) ?? String(defaultValue);
+  }
+
   private renderWorkpiece() {
     return svg`
       <path class="workpiece tails" d="M0 0 L${this.workpieceWidth} 0 ${this.workpieceWidth} ${this.workpieceTop} 0 ${this.workpieceTop} 0 0" />
@@ -91,7 +136,6 @@ export class DovetailCalculator extends LitElement {
   }
 
   private renderTails() {
-    console.log(this.tailsCount)
     const tails = new Array(this.tailsCount)
       .fill(undefined)
       .map((_, i) =>
@@ -129,14 +173,14 @@ export class DovetailCalculator extends LitElement {
         <div>
           <label>
             Workpiece width:
-            <input type="number" .value=${this.workpieceWidth} @change=${(e: Event) => this.workpieceWidth = Number((e.target as HTMLInputElement).value)} min="1" /> mm
+            <input type="number" .value=${this.workpieceWidth} @change=${this.handleWorkpieceWidthChange.bind(this)} min="1" /> mm
           </label>
         </div>
 
         <div>
           <label>
             Workpiece height (thickness):
-            <input type="number" .value=${this.workpieceHeight} @change=${(e: Event) => this.workpieceHeight = Number((e.target as HTMLInputElement).value)} min="1" /> mm
+            <input type="number" .value=${this.workpieceHeight} @change=${this.handleWorkpieceHeightChange.bind(this)} min="1" /> mm
           </label>
         </div>
 
@@ -145,7 +189,7 @@ export class DovetailCalculator extends LitElement {
             Division:
             ${Object.values(Division).map(division => html`
               <label>
-                <input name="division" type="radio" .value=${division} .checked=${this.division === division} @change=${() => this.division = division} />
+                <input name="division" type="radio" .value=${division} .checked=${this.division === division} @change=${() => this.handleDivisionChange(division)} />
                 ${division}
               </label>
             `)}
@@ -155,8 +199,12 @@ export class DovetailCalculator extends LitElement {
         <div>
           <label>
             Dovetail to pin width ratio:
-            <input type="number" .value=${this.tailPinRatio} @change=${(e: Event) => this.tailPinRatio = Number((e.target as HTMLInputElement).value)} min="0" step="0.25" />
+            <input type="number" .value=${this.tailPinRatio} @change=${this.handleTailPinRatioChange.bind(this)} min="0" step="0.25" />
           </label>
+        </div>
+
+        <div>
+          <button @click=${() => this.reset()}>Reset</button>
         </div>
       </section>
 

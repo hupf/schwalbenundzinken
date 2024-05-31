@@ -38,21 +38,42 @@
       <path class="workpiece pins" d="M0 ${this.workpieceTop} L${this.workpieceWidth} ${this.workpieceTop} ${this.workpieceWidth} ${this.workpieceTop+this.workpieceHeight} 0 ${this.workpieceTop+this.workpieceHeight} 0 ${this.workpieceTop}" />
     `}renderTails(){const r=new Array(this.tailsCount).fill(void 0).map((t,e)=>this.renderTail(this.deviation/2+e*(this.pinWidth+this.tailWidth)+this.pinWidth-this.tailMarkOffset,this.tailWidth+2*this.tailMarkOffset));return rt(r,"")}renderTail(r,t){return it`
       <path class="dovetail" d="M${r+t/2} 0 L${r} ${this.workpieceBottom} ${r+t} ${this.workpieceBottom} ${r+t/2} 0" />
-    `}renderMarks(){const r=[];for(let t=0;t<this.tailsCount;t+=1){const e=this.deviation/2+t*(this.pinWidth+this.tailWidth);r.push(e+this.pinWidth),r.push(e+this.pinWidth+this.tailWidth)}return z`Marks (on center line):<br>${rt(r,", ")} mm`}render(){return z`
+    `}renderMarks(){const r=[];for(let t=0;t<this.tailsCount;t+=1){const e=this.deviation/2+t*(this.pinWidth+this.tailWidth);r.push(e+this.pinWidth),r.push(e+this.pinWidth+this.tailWidth)}return z`Marks (on center line):<br />${rt(r,", ")} mm`}render(){return z`
       <h1>Schwalben & Zinken</h1>
-      <p>This is a calculator and visualizer for <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail joints</a>. It first determines the number of dovetails with a method that <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a> demostrates and then develops the angle as described by <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a triangle with three times the height of the workpiece is formed.
+      <p>
+        This is a calculator and visualizer for
+        <a href="https://en.wikipedia.org/wiki/Dovetail_joint"
+          >dovetail joints</a
+        >. It first determines the number of dovetails with a method that
+        <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a>
+        demostrates and then develops the angle as described by
+        <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a
+        triangle with three times the height of the workpiece is formed.
+      </p>
       <section>
         <div>
           <label>
             Workpiece width:
-            <input type="number" .value=${this.workpieceWidth} @change=${this.handleWorkpieceWidthChange.bind(this)} min="1" /> mm
+            <input
+              type="number"
+              .value=${this.workpieceWidth}
+              @change=${this.handleWorkpieceWidthChange.bind(this)}
+              min="1"
+            />
+            mm
           </label>
         </div>
 
         <div>
           <label>
             Workpiece height (thickness):
-            <input type="number" .value=${this.workpieceHeight} @change=${this.handleWorkpieceHeightChange.bind(this)} min="1" /> mm
+            <input
+              type="number"
+              .value=${this.workpieceHeight}
+              @change=${this.handleWorkpieceHeightChange.bind(this)}
+              min="1"
+            />
+            mm
           </label>
         </div>
 
@@ -60,18 +81,30 @@
           <label>
             Division:
             ${Object.values(At).map(r=>z`
-              <label>
-                <input name="division" type="radio" .value=${r} .checked=${this.division===r} @change=${()=>this.handleDivisionChange(r)} />
-                ${r}
-              </label>
-            `)}
+                <label>
+                  <input
+                    name="division"
+                    type="radio"
+                    .value=${r}
+                    .checked=${this.division===r}
+                    @change=${()=>this.handleDivisionChange(r)}
+                  />
+                  ${r}
+                </label>
+              `)}
           </label>
         </div>
 
         <div>
           <label>
             Dovetail to pin width ratio:
-            <input type="number" .value=${this.tailPinRatio} @change=${this.handleTailPinRatioChange.bind(this)} min="0" step="0.25" />
+            <input
+              type="number"
+              .value=${this.tailPinRatio}
+              @change=${this.handleTailPinRatioChange.bind(this)}
+              min="0"
+              step="0.25"
+            />
           </label>
         </div>
 
@@ -81,41 +114,43 @@
       </section>
 
       <section>
-        <div>
-          Parts: ${this.partsCount} × ${this.partWidth} mm
-        </div>
+        <div>Parts: ${this.partsCount} × ${this.partWidth} mm</div>
+
+        <div>Dovetails: ${this.tailsCount} × ${this.tailWidth} mm</div>
 
         <div>
-          Dovetails: ${this.tailsCount} × ${this.tailWidth} mm
+          Pins: ${this.pinWidth} mm (first/last pins are
+          ${this.pinWidth+this.deviation/2} mm)
         </div>
 
-        <div>
-          Pins: ${this.pinWidth} mm (first/last pins are ${this.pinWidth+this.deviation/2} mm)
-        </div>
+        <div>Angle: ${90-Math.round(this.angle*180/Math.PI)}°</div>
 
         <div>
-          Angle: ${90-Math.round(this.angle*180/Math.PI)}°
-        </div>
-
-        <div>
-          Dovetail minimum distance: ${Math.round(this.pinWidth-2*this.tailMarkOffset)} mm
+          Dovetail minimum distance:
+          ${Math.round(this.pinWidth-2*this.tailMarkOffset)} mm
         </div>
       </section>
 
       <section>
-        <svg width=${this.workpieceWidth} height=${3*this.workpieceHeight} xmlns="http://www.w3.org/2000/svg" style="margin-right: ${this.workpieceWidth}px; margin-bottom: ${3*this.workpieceHeight}px">
-          ${this.renderWorkpiece()}
-          ${this.renderTails()}
+        <svg
+          width=${this.workpieceWidth}
+          height=${3*this.workpieceHeight}
+          xmlns="http://www.w3.org/2000/svg"
+          style="margin-right: ${this.workpieceWidth}px; margin-bottom: ${3*this.workpieceHeight}px"
+        >
+          ${this.renderWorkpiece()} ${this.renderTails()}
         </svg>
       </section>
 
-      <section>
-        ${this.renderMarks()}
-      </section>
+      <section>${this.renderMarks()}</section>
 
       <section class="source">
-        Source code: <a href="https://github.com/hupf/schwalbenundzinken">github.com/hupf/schwalbenundzinken</a><br>
-        © Mathis Hofer – free software under the terms of the Apache License 2.0.
+        Source code:
+        <a href="https://github.com/hupf/schwalbenundzinken"
+          >github.com/hupf/schwalbenundzinken</a
+        ><br />
+        © Mathis Hofer – free software under the terms of the Apache License
+        2.0.
       </section>
     `}};y.styles=bt`
     :host {
@@ -131,7 +166,7 @@
       font-size: 0.7rem;
     }
 
-    input[type=number] {
+    input[type="number"] {
       width: 8ch;
     }
 
@@ -148,5 +183,4 @@
     svg path.dovetail {
       fill: #888;
     }
-    
   `;O([I()],y.prototype,"workpieceWidth",2);O([I()],y.prototype,"workpieceHeight",2);O([I()],y.prototype,"division",2);O([I()],y.prototype,"tailPinRatio",2);y=O([zt("dovetail-calculator")],y);

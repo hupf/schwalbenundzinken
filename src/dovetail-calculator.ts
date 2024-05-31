@@ -1,16 +1,16 @@
-import { LitElement, css, html, svg } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
-import { join } from 'lit/directives/join.js';
+import { LitElement, css, html, svg } from "lit";
+import { customElement, state } from "lit/decorators.js";
+import { join } from "lit/directives/join.js";
 
 enum Division {
   Fine = "fine",
   Medium = "medium",
-  Coarse = "coarse"
+  Coarse = "coarse",
 }
 
 const DIVISION_FACTOR = {
   [Division.Fine]: 1.0,
-  [Division.Medium]: 2/3,
+  [Division.Medium]: 2 / 3,
   [Division.Coarse]: 0.5,
 };
 
@@ -24,13 +24,17 @@ const WORKPIECE_HEIGHT_DEFAULT = 15;
 const DIVISION_DEFAULT: Division = Division.Medium;
 const TAIL_PIN_RATIO_DEFAULT = 2;
 
-@customElement('dovetail-calculator')
+@customElement("dovetail-calculator")
 export class DovetailCalculator extends LitElement {
   @state()
-  private workpieceWidth = Number(this.readValue(WORKPIECE_WIDTH_KEY, WORKPIECE_WIDTH_DEFAULT));
+  private workpieceWidth = Number(
+    this.readValue(WORKPIECE_WIDTH_KEY, WORKPIECE_WIDTH_DEFAULT),
+  );
 
   @state()
-  private workpieceHeight = Number(this.readValue(WORKPIECE_HEIGHT_KEY, WORKPIECE_HEIGHT_DEFAULT));
+  private workpieceHeight = Number(
+    this.readValue(WORKPIECE_HEIGHT_KEY, WORKPIECE_HEIGHT_DEFAULT),
+  );
 
   private get workpieceTop() {
     return 2 * this.workpieceHeight;
@@ -40,13 +44,21 @@ export class DovetailCalculator extends LitElement {
   }
 
   @state()
-  private division: Division = this.readValue(DIVISION_KEY, DIVISION_DEFAULT) as Division;
+  private division: Division = this.readValue(
+    DIVISION_KEY,
+    DIVISION_DEFAULT,
+  ) as Division;
 
   @state()
-  private tailPinRatio = Number(this.readValue(TAIL_PIN_RATIO_KEY, TAIL_PIN_RATIO_DEFAULT));
+  private tailPinRatio = Number(
+    this.readValue(TAIL_PIN_RATIO_KEY, TAIL_PIN_RATIO_DEFAULT),
+  );
 
   private get tailsCount(): number {
-    return Math.floor(this.workpieceWidth / this.workpieceHeight * DIVISION_FACTOR[this.division]);
+    return Math.floor(
+      (this.workpieceWidth / this.workpieceHeight) *
+        DIVISION_FACTOR[this.division],
+    );
   }
 
   private get pinsCount(): number {
@@ -72,36 +84,41 @@ export class DovetailCalculator extends LitElement {
   }
 
   private get deviation(): number {
-    return this.workpieceWidth - (this.tailsCount * this.tailWidth + this.pinsCount * this.pinWidth);
+    return (
+      this.workpieceWidth -
+      (this.tailsCount * this.tailWidth + this.pinsCount * this.pinWidth)
+    );
   }
 
   private get angle(): number {
-    return Math.atan(
-      (2.5 * this.workpieceHeight) / (this.tailWidth / 2)
-    )
+    return Math.atan((2.5 * this.workpieceHeight) / (this.tailWidth / 2));
   }
 
   /**
    * Offset of the lower corners to the tail mark on the center line
    */
   private get tailMarkOffset(): number {
-   return (3 * this.workpieceHeight) / Math.tan(this.angle) - this.tailWidth / 2;
+    return (
+      (3 * this.workpieceHeight) / Math.tan(this.angle) - this.tailWidth / 2
+    );
   }
 
   private reset(): void {
     this.handleWorkpieceWidthChange(WORKPIECE_WIDTH_DEFAULT);
     this.handleWorkpieceHeightChange(WORKPIECE_HEIGHT_DEFAULT);
     this.handleDivisionChange(DIVISION_DEFAULT);
-    this.handleTailPinRatioChange(TAIL_PIN_RATIO_DEFAULT)
+    this.handleTailPinRatioChange(TAIL_PIN_RATIO_DEFAULT);
   }
 
   private handleWorkpieceWidthChange(e: Event | number): void {
-    this.workpieceWidth = typeof e ==="number" ? e : Number((e.target as HTMLInputElement).value);
+    this.workpieceWidth =
+      typeof e === "number" ? e : Number((e.target as HTMLInputElement).value);
     this.storeValue(WORKPIECE_WIDTH_KEY, this.workpieceWidth);
   }
 
   private handleWorkpieceHeightChange(e: Event | number): void {
-    this.workpieceHeight = typeof e ==="number" ? e : Number((e.target as HTMLInputElement).value);
+    this.workpieceHeight =
+      typeof e === "number" ? e : Number((e.target as HTMLInputElement).value);
     this.storeValue(WORKPIECE_HEIGHT_KEY, this.workpieceHeight);
   }
 
@@ -111,7 +128,8 @@ export class DovetailCalculator extends LitElement {
   }
 
   private handleTailPinRatioChange(e: Event | number): void {
-    this.tailPinRatio = typeof e ==="number" ? e : Number((e.target as HTMLInputElement).value);
+    this.tailPinRatio =
+      typeof e === "number" ? e : Number((e.target as HTMLInputElement).value);
     this.storeValue(TAIL_PIN_RATIO_KEY, this.tailPinRatio);
   }
 
@@ -128,10 +146,10 @@ export class DovetailCalculator extends LitElement {
       <path class="workpiece tails" d="M0 0 L${this.workpieceWidth} 0 ${this.workpieceWidth} ${this.workpieceTop} 0 ${this.workpieceTop} 0 0" />
 
       <path class="workpiece pins" d="M0 ${this.workpieceTop} L${
-      this.workpieceWidth
-    } ${this.workpieceTop} ${this.workpieceWidth} ${
-      this.workpieceTop + this.workpieceHeight
-    } 0 ${this.workpieceTop + this.workpieceHeight} 0 ${this.workpieceTop}" />
+        this.workpieceWidth
+      } ${this.workpieceTop} ${this.workpieceWidth} ${
+        this.workpieceTop + this.workpieceHeight
+      } 0 ${this.workpieceTop + this.workpieceHeight} 0 ${this.workpieceTop}" />
     `;
   }
 
@@ -140,18 +158,21 @@ export class DovetailCalculator extends LitElement {
       .fill(undefined)
       .map((_, i) =>
         this.renderTail(
-          this.deviation/2 + i * (this.pinWidth + this.tailWidth) + this.pinWidth - this.tailMarkOffset,
-          this.tailWidth + 2 * this.tailMarkOffset
-        )
+          this.deviation / 2 +
+            i * (this.pinWidth + this.tailWidth) +
+            this.pinWidth -
+            this.tailMarkOffset,
+          this.tailWidth + 2 * this.tailMarkOffset,
+        ),
       );
-    return join(tails, '')
+    return join(tails, "");
   }
 
   private renderTail(offset: number, width: number) {
     return svg`
       <path class="dovetail" d="M${offset + width / 2} 0 L${offset} ${
-      this.workpieceBottom
-    } ${offset + width} ${this.workpieceBottom} ${offset + width / 2} 0" />
+        this.workpieceBottom
+      } ${offset + width} ${this.workpieceBottom} ${offset + width / 2} 0" />
     `;
   }
 
@@ -162,44 +183,79 @@ export class DovetailCalculator extends LitElement {
       marks.push(base + this.pinWidth);
       marks.push(base + this.pinWidth + this.tailWidth);
     }
-    return html`Marks (on center line):<br>${join(marks, ", ")} mm`
+    return html`Marks (on center line):<br />${join(marks, ", ")} mm`;
   }
 
   render() {
     return html`
       <h1>Schwalben & Zinken</h1>
-      <p>This is a calculator and visualizer for <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail joints</a>. It first determines the number of dovetails with a method that <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a> demostrates and then develops the angle as described by <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a triangle with three times the height of the workpiece is formed.
+      <p>
+        This is a calculator and visualizer for
+        <a href="https://en.wikipedia.org/wiki/Dovetail_joint"
+          >dovetail joints</a
+        >. It first determines the number of dovetails with a method that
+        <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a>
+        demostrates and then develops the angle as described by
+        <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a
+        triangle with three times the height of the workpiece is formed.
+      </p>
       <section>
         <div>
           <label>
             Workpiece width:
-            <input type="number" .value=${this.workpieceWidth} @change=${this.handleWorkpieceWidthChange.bind(this)} min="1" /> mm
+            <input
+              type="number"
+              .value=${this.workpieceWidth}
+              @change=${this.handleWorkpieceWidthChange.bind(this)}
+              min="1"
+            />
+            mm
           </label>
         </div>
 
         <div>
           <label>
             Workpiece height (thickness):
-            <input type="number" .value=${this.workpieceHeight} @change=${this.handleWorkpieceHeightChange.bind(this)} min="1" /> mm
+            <input
+              type="number"
+              .value=${this.workpieceHeight}
+              @change=${this.handleWorkpieceHeightChange.bind(this)}
+              min="1"
+            />
+            mm
           </label>
         </div>
 
         <div>
           <label>
             Division:
-            ${Object.values(Division).map(division => html`
-              <label>
-                <input name="division" type="radio" .value=${division} .checked=${this.division === division} @change=${() => this.handleDivisionChange(division)} />
-                ${division}
-              </label>
-            `)}
+            ${Object.values(Division).map(
+              (division) => html`
+                <label>
+                  <input
+                    name="division"
+                    type="radio"
+                    .value=${division}
+                    .checked=${this.division === division}
+                    @change=${() => this.handleDivisionChange(division)}
+                  />
+                  ${division}
+                </label>
+              `,
+            )}
           </label>
         </div>
 
         <div>
           <label>
             Dovetail to pin width ratio:
-            <input type="number" .value=${this.tailPinRatio} @change=${this.handleTailPinRatioChange.bind(this)} min="0" step="0.25" />
+            <input
+              type="number"
+              .value=${this.tailPinRatio}
+              @change=${this.handleTailPinRatioChange.bind(this)}
+              min="0"
+              step="0.25"
+            />
           </label>
         </div>
 
@@ -209,43 +265,44 @@ export class DovetailCalculator extends LitElement {
       </section>
 
       <section>
-        <div>
-          Parts: ${this.partsCount} × ${this.partWidth} mm
-        </div>
+        <div>Parts: ${this.partsCount} × ${this.partWidth} mm</div>
+
+        <div>Dovetails: ${this.tailsCount} × ${this.tailWidth} mm</div>
 
         <div>
-          Dovetails: ${this.tailsCount} × ${this.tailWidth} mm
+          Pins: ${this.pinWidth} mm (first/last pins are
+          ${this.pinWidth + this.deviation / 2} mm)
         </div>
 
-        <div>
-          Pins: ${this.pinWidth} mm (first/last pins are ${this.pinWidth + this.deviation / 2} mm)
-        </div>
+        <div>Angle: ${90 - Math.round((this.angle * 180) / Math.PI)}°</div>
 
         <div>
-          Angle: ${90 - Math.round(this.angle * 180 / Math.PI)}°
-        </div>
-
-        <div>
-          Dovetail minimum distance: ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
+          Dovetail minimum distance:
+          ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
         </div>
       </section>
 
       <section>
-        <svg width=${this.workpieceWidth} height=${
-        3 * this.workpieceHeight
-      } xmlns="http://www.w3.org/2000/svg" style="margin-right: ${this.workpieceWidth}px; margin-bottom: ${3 * this.workpieceHeight}px">
-          ${this.renderWorkpiece()}
-          ${this.renderTails()}
+        <svg
+          width=${this.workpieceWidth}
+          height=${3 * this.workpieceHeight}
+          xmlns="http://www.w3.org/2000/svg"
+          style="margin-right: ${this.workpieceWidth}px; margin-bottom: ${3 *
+          this.workpieceHeight}px"
+        >
+          ${this.renderWorkpiece()} ${this.renderTails()}
         </svg>
       </section>
 
-      <section>
-        ${this.renderMarks()}
-      </section>
+      <section>${this.renderMarks()}</section>
 
       <section class="source">
-        Source code: <a href="https://github.com/hupf/schwalbenundzinken">github.com/hupf/schwalbenundzinken</a><br>
-        © Mathis Hofer – free software under the terms of the Apache License 2.0.
+        Source code:
+        <a href="https://github.com/hupf/schwalbenundzinken"
+          >github.com/hupf/schwalbenundzinken</a
+        ><br />
+        © Mathis Hofer – free software under the terms of the Apache License
+        2.0.
       </section>
     `;
   }
@@ -264,7 +321,7 @@ export class DovetailCalculator extends LitElement {
       font-size: 0.7rem;
     }
 
-    input[type=number] {
+    input[type="number"] {
       width: 8ch;
     }
 
@@ -281,12 +338,11 @@ export class DovetailCalculator extends LitElement {
     svg path.dovetail {
       fill: #888;
     }
-    
   `;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'dovetail-calculator': DovetailCalculator;
+    "dovetail-calculator": DovetailCalculator;
   }
 }

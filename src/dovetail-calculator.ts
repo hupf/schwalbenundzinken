@@ -189,7 +189,7 @@ export class DovetailCalculator extends LitElement {
   render() {
     return html`
       <h1>Schwalben & Zinken</h1>
-      <p>
+      <section class="explanation">
         This is a calculator and visualizer for
         <a href="https://en.wikipedia.org/wiki/Dovetail_joint"
           >dovetail joints</a
@@ -198,8 +198,8 @@ export class DovetailCalculator extends LitElement {
         demostrates and then develops the angle as described by
         <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a
         triangle with three times the height of the workpiece is formed.
-      </p>
-      <section>
+      </section>
+      <section class="form">
         <div>
           <label>
             Workpiece width:
@@ -296,13 +296,12 @@ export class DovetailCalculator extends LitElement {
 
       <section>${this.renderMarks()}</section>
 
-      <section class="source">
-        Source code:
+      <section class="footer">
         <a href="https://github.com/hupf/schwalbenundzinken"
-          >github.com/hupf/schwalbenundzinken</a
-        ><br />
-        © Mathis Hofer – free software under the terms of the Apache License
-        2.0.
+          >Source on GitHub</a
+        >
+        · © <a href="https://bitgarten.ch">Mathis Hofer</a> · Free software
+        under the terms of the Apache License 2.0
       </section>
     `;
   }
@@ -312,11 +311,38 @@ export class DovetailCalculator extends LitElement {
       margin: 1rem;
     }
 
-    section {
-      margin-top: 1rem;
+    h1 {
+      margin-top: 0.5rem;
+      font-weight: 300;
+      font-size: 2.5rem;
     }
 
-    section.source {
+    a,
+    a:active,
+    a:visited {
+      color: #213547;
+    }
+
+    a:hover {
+      color: #000;
+    }
+
+    section {
+      margin-top: 1rem;
+      max-width: calc(100vw - 2 * 1rem);
+    }
+
+    section.explanation,
+    section.form {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    section.preview {
+      max-width: auto;
+    }
+
+    section.footer {
       margin-top: 2rem;
       font-size: 0.7rem;
     }

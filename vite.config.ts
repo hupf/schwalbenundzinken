@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [
     VitePWA({
       registerType: "autoUpdate",
+      injectRegister: "auto",
       manifest: {
         name: "Schwalben und Zinken",
         short_name: "Schwalben & Zinken",
@@ -25,7 +26,6 @@ export default defineConfig({
             src: "pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any",
           },
           {
             src: "maskable-icon-512x512.png",

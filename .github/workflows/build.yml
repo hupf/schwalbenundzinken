@@ -48,10 +48,7 @@ jobs:
 
       - name: Build
         run: |
-          pnpm build
-
-          # Prefix absolute paths with /schwalbenundzinken
-          sed -E -i -e 's~(href|src)="/~\1="/schwalbenundzinken/~g' dist/index.html
+          pnpm build --base=/schwalbenundzinken/
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

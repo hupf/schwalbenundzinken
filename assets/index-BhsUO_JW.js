@@ -38,7 +38,7 @@
       <path class="workpiece pins" d="M0 ${this.workpieceTop} L${this.workpieceWidth} ${this.workpieceTop} ${this.workpieceWidth} ${this.workpieceTop+this.workpieceHeight} 0 ${this.workpieceTop+this.workpieceHeight} 0 ${this.workpieceTop}" />
     `}renderTails(){const r=new Array(this.tailsCount).fill(void 0).map((t,e)=>this.renderTail(e*(this.pinWidth+this.tailWidth)+this.pinWidth-this.tailMarkOffset,this.tailWidth+2*this.tailMarkOffset));return rt(r,"")}renderTail(r,t){return it`
       <path class="dovetail" d="M${r+t/2} 0 L${r} ${this.workpieceBottom} ${r+t} ${this.workpieceBottom} ${r+t/2} 0" />
-    `}renderMarks(){const r=[];for(let t=0;t<this.tailsCount;t+=1){const e=t*(this.pinWidth+this.tailWidth);r.push(Math.round(e+this.pinWidth)),r.push(Math.round(e+this.pinWidth+this.tailWidth))}return z`Required tail marks (on center line):<br />${rt(r,", ")}
+    `}renderMarks(){const r=[];for(let t=0;t<this.tailsCount;t+=1){const e=t*(this.pinWidth+this.tailWidth);r.push(Math.round(e+this.pinWidth)),r.push(Math.round(e+this.pinWidth+this.tailWidth))}return z`Required marks on center line of tail piece:<br />${rt(r,", ")}
       mm`}render(){return z`
       <h1>Schwalben & Zinken</h1>
       <section class="explanation">
@@ -132,7 +132,7 @@
         <div>Angle: ${90-Math.round(this.angle*180/Math.PI)}°</div>
 
         <div>
-          Minimal gap between dovetails:
+          Smallest distance between dovetails:
           ${Math.round(this.pinWidth-2*this.tailMarkOffset)} mm
         </div>
       </section>

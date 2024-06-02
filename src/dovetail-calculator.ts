@@ -72,22 +72,15 @@ export class DovetailCalculator extends LitElement {
   }
 
   private get partWidth(): number {
-    return Math.floor(this.workpieceWidth / this.partsCount);
+    return this.workpieceWidth / this.partsCount;
   }
 
   private get pinWidth(): number {
-    return this.partWidth;
+    return this.partWidth * 1;
   }
 
   private get tailWidth(): number {
-    return Math.round(this.partWidth * this.tailPinRatio);
-  }
-
-  private get deviation(): number {
-    return (
-      this.workpieceWidth -
-      (this.tailsCount * this.tailWidth + this.pinsCount * this.pinWidth)
-    );
+    return this.partWidth * this.tailPinRatio;
   }
 
   private get angle(): number {
@@ -158,8 +151,7 @@ export class DovetailCalculator extends LitElement {
       .fill(undefined)
       .map((_, i) =>
         this.renderTail(
-          this.deviation / 2 +
-            i * (this.pinWidth + this.tailWidth) +
+          i * (this.pinWidth + this.tailWidth) +
             this.pinWidth -
             this.tailMarkOffset,
           this.tailWidth + 2 * this.tailMarkOffset,
@@ -179,11 +171,12 @@ export class DovetailCalculator extends LitElement {
   private renderMarks() {
     const marks = [];
     for (let i = 0; i < this.tailsCount; i += 1) {
-      const base = this.deviation / 2 + i * (this.pinWidth + this.tailWidth);
-      marks.push(base + this.pinWidth);
-      marks.push(base + this.pinWidth + this.tailWidth);
+      const base = i * (this.pinWidth + this.tailWidth);
+      marks.push(Math.round(base + this.pinWidth));
+      marks.push(Math.round(base + this.pinWidth + this.tailWidth));
     }
-    return html`Marks (on center line):<br />${join(marks, ", ")} mm`;
+    return html`Required tail marks (on center line):<br />${join(marks, ", ")}
+      mm`;
   }
 
   render() {
@@ -193,9 +186,11 @@ export class DovetailCalculator extends LitElement {
         This is a calculator and visualizer for
         <a href="https://en.wikipedia.org/wiki/Dovetail_joint"
           >dovetail joints</a
-        >. It first determines the number of dovetails with a method that
+        >
+        used in woodworking. It first determines the number of dovetails based
+        on the width/height of the workpiece, like
         <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a>
-        demostrates and then develops the angle as described by
+        demonstrates. Then the dovetail angle is developed as described by
         <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a
         triangle with three times the height of the workpiece is formed.
       </section>
@@ -255,7 +250,7 @@ export class DovetailCalculator extends LitElement {
               @change=${this.handleTailPinRatioChange.bind(this)}
               min="0"
               step="0.25"
-            />
+            />:1
           </label>
         </div>
 
@@ -265,19 +260,22 @@ export class DovetailCalculator extends LitElement {
       </section>
 
       <section>
-        <div>Parts: ${this.partsCount} × ${this.partWidth} mm</div>
-
-        <div>Dovetails: ${this.tailsCount} × ${this.tailWidth} mm</div>
+        <div>Parts: ${this.partsCount} × ${this.partWidth.toFixed(1)} mm</div>
 
         <div>
-          Pins: ${this.pinWidth} mm (first/last pins are
-          ${this.pinWidth + this.deviation / 2} mm)
+          Dovetails: ${this.tailsCount} × ${Math.round(this.tailWidth)} mm
+          <span class="unrounded">(${this.tailWidth.toFixed(1)} mm)</span>
+        </div>
+
+        <div>
+          Pins: ${Math.round(this.pinWidth)} mm
+          <span class="unrounded">(${this.pinWidth.toFixed(1)} mm)</span>
         </div>
 
         <div>Angle: ${90 - Math.round((this.angle * 180) / Math.PI)}°</div>
 
         <div>
-          Dovetail minimum distance:
+          Minimal gap between dovetails:
           ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
         </div>
       </section>
@@ -300,8 +298,8 @@ export class DovetailCalculator extends LitElement {
         <a href="https://github.com/hupf/schwalbenundzinken"
           >Source on GitHub</a
         >
-        · © <a href="https://bitgarten.ch">Mathis Hofer</a> · Free software
-        under the terms of the Apache License 2.0
+        · © <a href="https://bitgarten.ch">Mathis Hofer</a> · Please use &
+        share, this is free software under the terms of the Apache License 2.0.
       </section>
     `;
   }
@@ -329,7 +327,7 @@ export class DovetailCalculator extends LitElement {
 
     section {
       margin-top: 1rem;
-      max-width: calc(100vw - 2 * 1rem);
+      max-width: min(calc(100vw - 2 * 1rem), 80ch);
     }
 
     section.explanation,
@@ -349,6 +347,10 @@ export class DovetailCalculator extends LitElement {
 
     input[type="number"] {
       width: 8ch;
+    }
+
+    .unrounded {
+      color: #999;
     }
 
     svg {

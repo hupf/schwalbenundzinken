@@ -175,7 +175,10 @@ export class DovetailCalculator extends LitElement {
       marks.push(Math.round(base + this.pinWidth));
       marks.push(Math.round(base + this.pinWidth + this.tailWidth));
     }
-    return html`Required tail marks (on center line):<br />${join(marks, ", ")}
+    return html`Required marks on center line of tail piece:<br />${join(
+        marks,
+        ", ",
+      )}
       mm`;
   }
 
@@ -275,7 +278,7 @@ export class DovetailCalculator extends LitElement {
         <div>Angle: ${90 - Math.round((this.angle * 180) / Math.PI)}°</div>
 
         <div>
-          Minimal gap between dovetails:
+          Smallest distance between dovetails:
           ${Math.round(this.pinWidth - 2 * this.tailMarkOffset)} mm
         </div>
       </section>

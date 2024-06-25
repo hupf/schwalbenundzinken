@@ -15,13 +15,17 @@
     "lint:eslint": "eslint src/",
     "lint:format": "prettier . --check",
     "format": "prettier . --write",
+    "locale:extract": "lit-localize extract",
+    "locale:build": "lit-localize build",
     "prepare": "husky"
   },
   "dependencies": {
+    "@lit/localize": "^0.12.1",
     "lit": "^3.1.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",
+    "@lit/localize-tools": "^0.7.2",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "eslint": "9.x",
     "globals": "^15.3.0",

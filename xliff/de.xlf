@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<file target-language="de" source-language="en" original="lit-localize-inputs" datatype="plaintext">
+<body>
+<trans-unit id="s612ed89adcd17e0a">
+  <source>Workpiece width</source>
+  <target state="translated">Breite Werkstück</target>
+</trans-unit>
+<trans-unit id="s52e06f78d696cf64">
+  <source>Workpiece height (thickness)</source>
+  <target state="translated">Höhe Werkstück (Dicke)</target>
+</trans-unit>
+<trans-unit id="s3b3ea038c5d3bb06">
+  <source>Division</source>
+  <target state="translated">Teilung</target>
+</trans-unit>
+<trans-unit id="s737a095964aeb3c8">
+  <source>Dovetail to pin width ratio</source>
+  <target state="translated">Verhältnis Schwalbe/Zinke</target>
+</trans-unit>
+<trans-unit id="s255857544a9d5ec0">
+  <source>Reset</source>
+  <target state="translated">Zurücksetzen</target>
+</trans-unit>
+<trans-unit id="scc11850e140eab25">
+  <source>Parts</source>
+  <target state="translated">Teile</target>
+</trans-unit>
+<trans-unit id="s68496602df547d5c">
+  <source>Dovetails</source>
+  <target state="translated">Schwalben</target>
+</trans-unit>
+<trans-unit id="se9bed519c6a36725">
+  <source>Pins</source>
+  <target state="translated">Zinken</target>
+</trans-unit>
+<trans-unit id="s5bb297d85a6de998">
+  <source>Angle</source>
+  <target state="translated">Winkel</target>
+</trans-unit>
+<trans-unit id="s5a5a2a1aba8c5854">
+  <source>Smallest distance between dovetails</source>
+  <target state="translated">Geringste Distanz zwischen Schwalben</target>
+</trans-unit>
+<trans-unit id="sa61967bcda24ab18">
+  <source>Source on GitHub</source>
+  <target state="translated">Quelltext auf GitHub</target>
+</trans-unit>
+<trans-unit id="saad72578f030aacd">
+  <source>fine</source>
+  <target state="translated">fein</target>
+</trans-unit>
+<trans-unit id="sc76a095e1ffa22b6">
+  <source>medium</source>
+  <target state="translated">mittel</target>
+</trans-unit>
+<trans-unit id="s16377c5d9cbfde84">
+  <source>coarse</source>
+  <target state="translated">grob</target>
+</trans-unit>
+<trans-unit id="s2b606c448ab12d87">
+  <source>https://en.wikipedia.org/wiki/Dovetail_joint</source>
+  <target state="translated">https://de.wikipedia.org/wiki/Schwalbenschwanzverbindung</target>
+</trans-unit>
+<trans-unit id="sb1a53cd9697257e1">
+  <source>https://www.youtube.com/watch?v=OhKzkUbvSC8</source>
+  <target state="translated">https://www.youtube.com/watch?v=OhKzkUbvSC8</target>
+</trans-unit>
+<trans-unit id="s04a6158ea5723980">
+  <source>https://d-nb.info/830690026</source>
+  <target state="translated">https://d-nb.info/830690026</target>
+</trans-unit>
+<trans-unit id="h1d510fd53dcb1e0c">
+  <source>This is a calculator and visualizer for
+            <x id="0" equiv-text="&lt;a href=&quot;${wikipediaLink}&quot;&gt;"/>dovetail joints<x id="1" equiv-text="&lt;/a&gt;"/>
+            used in woodworking. It first determines the number of dovetails
+            based on the width/height of the workpiece, like
+            <x id="2" equiv-text="&lt;a href=&quot;${haukeLink}&quot;&gt;"/>Hauke Schmidt<x id="3" equiv-text="&lt;/a&gt;"/>
+            demonstrates. Then the dovetail angle is developed as described by
+            <x id="4" equiv-text="&lt;a href=&quot;${spannagelLink}&quot;&gt;"/>Fritz Spannagel<x id="5" equiv-text="&lt;/a&gt;"/>, where a triangle
+            with three times the height of the workpiece is formed.</source>
+  <target state="translated">Dies ist eine Berechnungs- und Visualisierungshilfe für
+            <x id="0" equiv-text="&lt;a href=&quot;${wikipediaLink}&quot;&gt;"/>Schwalbenschwanzverbindungen<x id="1" equiv-text="&lt;/a&gt;"/>
+            wie sie in der Holzbearbeitung verwendet werden. Zuerst wird die Anzahl Schwalbenschwänze ermittelt, basierend auf der Breite/Höhe des Werkstücks, wie es
+            <x id="2" equiv-text="&lt;a href=&quot;${haukeLink}&quot;&gt;"/>Hauke Schmidt<x id="3" equiv-text="&lt;/a&gt;"/>
+            demonstriert. Danach wird der Schwalbenschwanzwinkel – wie von
+            <x id="4" equiv-text="&lt;a href=&quot;${spannagelLink}&quot;&gt;"/>Fritz Spannagel<x id="5" equiv-text="&lt;/a&gt;"/>, beschrieben – entwickelt, indem ein Dreieck mit der dreifachen Höhe des Werkstücks gebildet wird.</target>
+</trans-unit>
+<trans-unit id="s6306bd8aba13962f">
+  <source>Required marks on center line of pins piece</source>
+  <target state="translated">Benötigte Risse auf der Mittellinie des Zinkenstücks</target>
+</trans-unit>
+<trans-unit id="sb38cd24a8470eada">
+  <source>Please use and share, this is free software under the terms of the Apache License 2.0.</source>
+  <target state="translated">Bitte verwenden und teilen, dies ist freie Software lizenziert unter der Apache License 2.0.</target>
+</trans-unit>
+</body>
+</file>
+</xliff>

@@ -1,9 +1,14 @@
 import { LitElement, css, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
+import { classMap } from "lit/directives/class-map.js";
+import { map } from "lit/directives/map.js";
+import { localized, msg } from "@lit/localize";
 import "./form";
+import { allLocales } from "./generated/locale-codes";
 import "./info";
 import "./marks";
 import "./preview";
+import { getLocale, setInitialLocale, updateLocale } from "./utils/locale";
 
 export enum Division {
   Fine = "fine",
@@ -28,6 +33,7 @@ const DIVISION_DEFAULT: Division = Division.Medium;
 const TAIL_PIN_RATIO_DEFAULT = 2;
 
 @customElement("dovetail-calculator")
+@localized()
 export class DovetailCalculator extends LitElement {
   @state()
   private workpieceWidth = Number(
@@ -92,6 +98,11 @@ export class DovetailCalculator extends LitElement {
     );
   }
 
+  constructor() {
+    super();
+    setInitialLocale();
+  }
+
   connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener("dt-form-change", this.handleFormChange);
@@ -154,19 +165,23 @@ export class DovetailCalculator extends LitElement {
   }
 
   render() {
+    console.log("render", getLocale());
+    const wikipediaLink = msg("https://en.wikipedia.org/wiki/Dovetail_joint");
+    const haukeLink = msg("https://www.youtube.com/watch?v=OhKzkUbvSC8");
+    const spannagelLink = msg("https://d-nb.info/830690026");
     return html`
       <h1>Schwalben & Zinken</h1>
       <section class="explanation">
-        This is a calculator and visualizer for
-        <a href="https://en.wikipedia.org/wiki/Dovetail_joint"
-          >dovetail joints</a
-        >
-        used in woodworking. It first determines the number of dovetails based
-        on the width/height of the workpiece, like
-        <a href="https://www.youtube.com/watch?v=OhKzkUbvSC8">Hauke Schmidt</a>
-        demonstrates. Then the dovetail angle is developed as described by
-        <a href="https://d-nb.info/830690026">Fritz Spannagel</a>, where a
-        triangle with three times the height of the workpiece is formed.
+        ${msg(
+          html`This is a calculator and visualizer for
+            <a href="${wikipediaLink}">dovetail joints</a>
+            used in woodworking. It first determines the number of dovetails
+            based on the width/height of the workpiece, like
+            <a href="${haukeLink}">Hauke Schmidt</a>
+            demonstrates. Then the dovetail angle is developed as described by
+            <a href="${spannagelLink}">Fritz Spannagel</a>, where a triangle
+            with three times the height of the workpiece is formed.`,
+        )}
       </section>
       <section class="form">
         <dt-form
@@ -210,10 +225,16 @@ export class DovetailCalculator extends LitElement {
 
       <section class="footer">
         <a href="https://github.com/hupf/schwalbenundzinken"
-          >Source on GitHub</a
+          >${msg("Source on GitHub")}</a
         >
-        · © <a href="https://bitgarten.ch">Mathis Hofer</a> · Please use &
-        share, this is free software under the terms of the Apache License 2.0.
+        ·
+        © <a href="https://bitgarten.ch">Mathis Hofer</a>
+        ·
+        ${msg(
+          "Please use and share, this is free software under the terms of the Apache License 2.0.",
+        )}
+        ·
+        <ul class="locales">${map(allLocales, (locale) => html`<li><button class=${classMap({ active: locale === getLocale() })} @click=${() => updateLocale(locale)}>${locale}</button></li>`)}
       </section>
     `;
   }
@@ -257,6 +278,27 @@ export class DovetailCalculator extends LitElement {
     section.footer {
       margin-top: 2rem;
       font-size: 0.7rem;
+    }
+
+    .locales {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: inline-flex;
+      gap: 1ch;
+    }
+
+    .locales button {
+      padding: 0;
+      border: 0;
+      background: none;
+      font-size: 0.7rem;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .locales button.active {
+      font-weight: 600;
     }
   `;
 }

@@ -1,5 +1,6 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { localized, msg } from "@lit/localize";
 import { Division } from "./dovetail-calculator";
 
 export type FormChangeEvent = CustomEvent<{
@@ -10,6 +11,7 @@ export type FormChangeEvent = CustomEvent<{
 }>;
 
 @customElement("dt-form")
+@localized()
 export class Form extends LitElement {
   @property()
   workpieceWidth = 0;
@@ -74,11 +76,26 @@ export class Form extends LitElement {
     );
   }
 
+  private getDivisionLabel(division: Division): string {
+    switch (division) {
+      case Division.Fine:
+        return msg("fine");
+      case Division.Medium:
+        return msg("medium");
+      case Division.Coarse:
+        return msg("coarse");
+      default: {
+        const exhaustiveCheck: never = division;
+        throw new Error(exhaustiveCheck);
+      }
+    }
+  }
+
   render() {
     return html`
       <div>
         <label>
-          Workpiece width:
+          ${msg("Workpiece width")}:
           <input
             type="number"
             .value=${this.workpieceWidth}
@@ -91,7 +108,7 @@ export class Form extends LitElement {
 
       <div>
         <label>
-          Workpiece height (thickness):
+          ${msg("Workpiece height (thickness)")}:
           <input
             type="number"
             .value=${this.workpieceHeight}
@@ -104,7 +121,7 @@ export class Form extends LitElement {
 
       <div>
         <label>
-          Division:
+          ${msg("Division")}:
           ${Object.values(Division).map(
             (division) => html`
               <label>
@@ -115,7 +132,7 @@ export class Form extends LitElement {
                   .checked=${this.division === division}
                   @change=${() => this.onDivisionChange(division)}
                 />
-                ${division}
+                ${this.getDivisionLabel(division)}
               </label>
             `,
           )}
@@ -124,7 +141,7 @@ export class Form extends LitElement {
 
       <div>
         <label>
-          Dovetail to pin width ratio:
+          ${msg("Dovetail to pin width ratio")}:
           <input
             type="number"
             .value=${this.tailPinRatio}
@@ -136,7 +153,7 @@ export class Form extends LitElement {
       </div>
 
       <div>
-        <button @click=${() => this.onReset()}>Reset</button>
+        <button @click=${() => this.onReset()}>${msg("Reset")}</button>
       </div>
     `;
   }
